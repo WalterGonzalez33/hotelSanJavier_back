@@ -2,6 +2,8 @@ import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import './src/database/dbConnection.js'
 
 // config de las variables de entorno
@@ -18,12 +20,13 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// rutas
+// ruta principal con el archivo estático
 
-app.get('/', (req, res) => {
-  res.send('Hola mundo')
-})
+const __fileName = fileURLToPath(import.meta.url)
+const __dirName = path.dirname(__fileName)
+app.use(express.static(path.join(__dirName, '/public')))
 
+// lanzamiento del servidor
 app.listen(port, () => {
   console.info(`Servidor escuchando en el puerto ${port}`)
 })
