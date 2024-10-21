@@ -19,7 +19,7 @@ const roomSchema = new Schema({
         required:true,
         validate: {
             validator: (value)=>{
-                return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/.test(valor)
+                return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/.test(value)
             }
         }
     },
