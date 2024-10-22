@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 // config variables de entorno
 dotenv.config()
 
-const mongoDB = process.env.MONGO_URI
+const mongoDB = process.env.MONGODB
 
 mongoose.connect(mongoDB)
 

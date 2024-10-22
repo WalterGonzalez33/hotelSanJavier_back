@@ -16,3 +16,14 @@ export const createRoom = async(req, res) => {
     res.status(500).json({ mensaje: "La habitacion no pudo ser creada" });
   }
 };
+
+export const ListarProdocutos = async(req,res) => {
+  try{
+   const productos = await Producto.find()
+   res.status(200).json(productos)
+  }
+  catch{
+   console.error(error)
+   res.status(500).json({mensaje:'ocurrio un error, no se pudo crear el producto'})
+  }
+}
