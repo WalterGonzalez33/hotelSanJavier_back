@@ -14,7 +14,7 @@ const roomSchema = new Schema({
         min:5000,
         max:1000000
     },
-    image:{
+     image:{
         type:String,
         required:true,
         validate: {
