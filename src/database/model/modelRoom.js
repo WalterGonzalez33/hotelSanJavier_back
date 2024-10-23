@@ -14,15 +14,7 @@ const roomSchema = new Schema({
         min:5000,
         max:1000000
     },
-     image:{
-        type:String,
-        required:true,
-        validate: {
-            validator: (value)=>{
-                return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/.test(value)
-            }
-        }
-    },
+
     room_type:{
         type:String,
         required:true,
