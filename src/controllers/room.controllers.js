@@ -16,14 +16,27 @@ export const createRoom = async (req, res) => {
   }
 };
 
-export const ListarProductos = async (req, res) => {
+// get que devuelve todo los productos
+
+export const ListarRoom = async (req, res) => {
   try {
-    const productos = await Room.find();
-    res.status(200).json(productos);
+    const rooms = await Room.find();
+    res.status(200).json(rooms);
   } catch {
-   
-    res
-      .status(500)
-      .json({ mensaje: "ocurrio un error, no se pudo crear el producto" });
+    res.status(500).json({ mensaje: "No se encontro ninguna habitacion" });
   }
+};
+
+// get que devuelve un solo producto
+
+export const ListarRoomId = async (req, res) => {
+  try {
+    const roomsId = await Room.findById(req.params.id);
+    if (!roomsId) {
+      return res
+        .status(404)
+        .json({ mensaje: "La habitacion buscada no fue encontrada" });
+    }
+    res.status(200).json(roomsId);
+  } catch {}
 };
