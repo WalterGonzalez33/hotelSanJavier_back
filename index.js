@@ -32,5 +32,5 @@ app.listen(port, () => {
   console.info(`Servidor escuchando en el puerto ${port}`)
 })
 
-//configuracion de ruta
-app.use('/roomApi',roomRouter)
+// configuracion de ruta
+app.use('/api', roomRouter)
