@@ -1,33 +1,52 @@
-import Room from '../database/models/modelRoom.js'
+import Room from '../database/model/modelRoom.js'
 
 export const funcionPrueba = (req, res) => {
   console.log('alguien hizo una solicitud')
   res.send('hola mundo desde el backend')
 }
 
+
 export const createRoom = async (req, res) => {
   try {
-    const newRoom = new Room(req.body)
-    await newRoom.save()
-    res.status(201).json({ mensaje: 'La habitacion fue creada correctamente' })
+    const newRoom = new Room(req.body);
+    await newRoom.save();
+    res.status(201).json({ mensaje: "La habitacion fue creada correctamente" });
   } catch (error) {
     console.error(error)
     res.status(500).json({ mensaje: 'La habitacion no pudo ser creada' })
   }
-}
+};
 
-export const viewRooms = async (req, res) =>{
+// Get que devuelve toda las habitaciones
+
+export const ListarRoom = async (req, res) => {
   try {
-    const habitaciones = await Room.find();
-    res.status(200).json(habitaciones);
+    const rooms = await Room.find();
+    res.status(201).json(rooms);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ mensaje: "ocurrio un error, no te pudimos mostrarte las habitaciones" });
+    res.status(404).json({ mensaje: "No se encontro ninguna habitacion" });
   }
+};
 
+// Get que devuelve una sola habitacion
+
+export const ListarRoomId = async (req, res) => {
+  try {
+    const roomsId = await Room.findById(req.params.id);
+    if (!roomsId) {
+      return res
+        .status(404)
+        .json({ mensaje: "La habitacion buscada no fue encontrada" });
+    }
+    res.status(200).json(roomsId);
+  } catch (error)
+  {
+    console.error(error)
+    res.status(500).json({mensaje: "error en la busqueda"})
+  }
 }
+
 
 export const editRoom = async (req, res) =>{
   try{
@@ -58,20 +77,5 @@ export const deleteRoom = async (req, res) =>{
     res
       .status(500)
       .json({ mensaje: "Ocurrio un error, no pudimos hacer eliminar la habitacion seleccionada" });
-  }
-}
-
-export const getRoom = async (req, res) =>{
-  try {
-    const habitacion = await Room.findById(req.params.id);
-    if (!habitacion){
-      return res.status(404).json({ mensaje: "La habitación solicitada no existe" });
-       };
-    res.status(200).json(habitacion);
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ mensaje: "ocurrio un error, no te pudimos mostrarte la habitacion solicitada" });
   }
 }
