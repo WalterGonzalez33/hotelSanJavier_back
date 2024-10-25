@@ -5,7 +5,7 @@ import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import './src/database/dbConnection.js'
-import router from './src/routes/user.routes.js'
+import userRouter from './src/routes/user.routes.js'
 
 
 // config de las variables de entorno
@@ -34,5 +34,5 @@ app.listen(port, () => {
 })
 
 // configuramos las rutas
-app.use('/user',router);
+app.use('/user',userRouter)
 
