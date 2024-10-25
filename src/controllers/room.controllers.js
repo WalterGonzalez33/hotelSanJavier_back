@@ -39,5 +39,9 @@ export const ListarRoomId = async (req, res) => {
         .json({ mensaje: "La habitacion buscada no fue encontrada" });
     }
     res.status(200).json(roomsId);
-  } catch {}
+  } catch (error)
+  {
+    console.error(error)
+    res.status(500).json({mensaje: "error en la busqueda"})
+  }
 };
