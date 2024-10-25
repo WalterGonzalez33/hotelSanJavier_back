@@ -6,13 +6,23 @@ const reservationSchema = new Schema(
       type: String,
       required: true,
       minLength: 8,
-      maxLength: 10
+      maxLength: 10,
+      validate: {
+        validator: (value) => {
+          return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(value)
+        }
+      }
     },
     check_out: {
       type: String,
       required: true,
       minLength: 8,
-      maxLength: 10
+      maxLength: 10,
+      validate: {
+        validator: (value) => {
+          return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(value)
+        }
+      }
     },
     persons: {
       type: Number,
@@ -37,13 +47,4 @@ const reservationSchema = new Schema(
 
 const Reservation = mongoose.model('reservation', reservationSchema)
 
-Reservation.create(
-  {
-    check_in: '24/10/2024',
-    check_out: '26/10/2024',
-    persons: 3,
-    user_id: '671a34b868c70e547a41935b',
-    room_id: '671a832ab0b2bdc7483a47b0'
-  }
-)
 export default Reservation
