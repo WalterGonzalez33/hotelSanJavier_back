@@ -1,4 +1,4 @@
-import Room from '../database/models/modelRoom.js'
+import Room from '../database/model/modelRoom.js'
 
 export const funcionPrueba = (req, res) => {
   console.log('alguien hizo una solicitud')
