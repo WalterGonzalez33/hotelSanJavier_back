@@ -3,9 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const roomSchema = new Schema({
     room_name:{
         type: String,
-        require: true,
-        minLenght: 2,
-        maxLength: 50,
+        required: true,
+        enum:['Dobles Superiores','Departamentos','Doble de Lujo','Suite Superior']
         //unique:true
     },
     price:{
@@ -19,19 +18,10 @@ const roomSchema = new Schema({
         required:true,
         validate: {
             validator: (value)=>{
-                return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/.test(valor)
+                return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/.test(value)
             }
         }
     },
-    room_type:{
-        type:String,
-        required:true,
-        enum:['Dobles Superiores','Departamentos','Doble de Lujo','Suite Superior']
-
-    },
-    //date : {
-
-    //}
     brief_description: {
         type:String,
         required:true,
