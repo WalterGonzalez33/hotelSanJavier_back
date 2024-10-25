@@ -60,3 +60,18 @@ export const deleteRoom = async (req, res) =>{
       .json({ mensaje: "Ocurrio un error, no pudimos hacer eliminar la habitacion seleccionada" });
   }
 }
+
+export const getRoom = async (req, res) =>{
+  try {
+    const habitacion = await Room.findById(req.params.id);
+    if (!habitacion){
+      return res.status(404).json({ mensaje: "La habitación solicitada no existe" });
+       };
+    res.status(200).json(habitacion);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ mensaje: "ocurrio un error, no te pudimos mostrarte la habitacion solicitada" });
+  }
+}
