@@ -6,6 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import './src/database/dbConnection.js'
 import roomRouter from './src/routes/room.routes.js'
+import userRouter from './src/routes/user.routes.js'
 import reservationRouter from './src/routes/reservation.routes.js'
 
 // config de las variables de entorno
@@ -35,4 +36,5 @@ app.listen(port, () => {
 
 // configuración de ruta
 app.use('/api', roomRouter)
+app.use('/api', userRouter)
 app.use('/api/reservation', reservationRouter)
