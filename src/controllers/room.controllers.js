@@ -16,18 +16,19 @@ export const createRoom = async (req, res) => {
   }
 };
 
-// get que devuelve todo los productos
+// Get que devuelve toda las habitaciones
 
 export const ListarRoom = async (req, res) => {
   try {
     const rooms = await Room.find();
-    res.status(200).json(rooms);
-  } catch {
-    res.status(500).json({ mensaje: "No se encontro ninguna habitacion" });
+    res.status(201).json(rooms);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ mensaje: "No se encontro ninguna habitacion" });
   }
 };
 
-// get que devuelve un solo producto
+// Get que devuelve una sola habitacion
 
 export const ListarRoomId = async (req, res) => {
   try {
