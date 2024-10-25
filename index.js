@@ -5,6 +5,8 @@ import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import './src/database/dbConnection.js'
+import router from './src/routes/user.routes.js'
+
 
 // config de las variables de entorno
 dotenv.config()
@@ -30,3 +32,7 @@ app.use(express.static(path.join(__dirName, '/public')))
 app.listen(port, () => {
   console.info(`Servidor escuchando en el puerto ${port}`)
 })
+
+// configuramos las rutas
+app.use('/user',router);
+
