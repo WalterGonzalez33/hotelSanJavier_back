@@ -6,6 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import './src/database/dbConnection.js'
 import roomRouter from './src/routes/room.routes.js'
+import reservationRouter from './src/routes/reservation.routes.js'
 
 // config de las variables de entorno
 dotenv.config()
@@ -32,5 +33,6 @@ app.listen(port, () => {
   console.info(`Servidor escuchando en el puerto ${port}`)
 })
 
-// configuracion de ruta
+// configuración de ruta
 app.use('/api', roomRouter)
+app.use('/api/reservation', reservationRouter)
