@@ -24,6 +24,21 @@ export const listReservation = async (req, res) => {
 }
 
 // func edit reservation
+export const getReservation = async (req, res) => {
+  try {
+    const { id } = req.params
+    const reservationFindId = await Reservation.findById(id)
+    if (!reservationFindId) {
+      return res.status(404).json({ message: '[ERROR] No se pudo encontrar la reservación' })
+    }
+    res.status(200).json(reservationFindId)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: '[ERROR] No se pudo obtener la reservación' })
+  }
+}
+
+// func edit reservation
 export const editReservation = async (req, res) => {
   try {
     const { id } = req.params
