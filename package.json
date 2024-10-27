@@ -15,9 +15,13 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+<<<<<<< HEAD
+    "express": "^4.21.1",
+=======
     "express": "^4.21.0",
     "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
+>>>>>>> 06595a1be4da26ba0e1f1bbecfdeb63b1d1d203a
     "mongoose": "^8.7.0",
     "morgan": "^1.10.0"
   },
