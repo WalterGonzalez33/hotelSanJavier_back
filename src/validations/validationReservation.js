@@ -19,6 +19,8 @@ export const reservationValidations = [
   check('persons')
     .notEmpty()
     .withMessage('El dato personas es obligatorio')
+    .isNumeric()
+    .withMessage('El dato persons tiene que ser un numero')
     .isLength({ min: 1, max: 2 })
     .withMessage('No puede haber mas de 4 personas en una reservación'),
   check('user_id')
