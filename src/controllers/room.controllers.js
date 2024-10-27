@@ -46,3 +46,36 @@ export const ListarRoomId = async (req, res) => {
     res.status(500).json({mensaje: "error en la busqueda"})
   }
 }
+
+
+export const editRoom = async (req, res) =>{
+  try{
+    const searchRoom = await Room.findById(req.params.id)
+    if (!searchRoom){
+      return res.status(404).json({ mensaje: "La habitación solicitada no existe" });
+       };
+    await Room.findByIdAndUpdate(req.params.id, req.body)
+    res.status(200).json({ mensaje: "La habitación fue modificada con exito" });
+  }catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ mensaje: "Ocurrio un error, no pudimos hacer las modificaciones solicitadas" });
+  }
+}
+
+export const deleteRoom = async (req, res) =>{
+  try{
+    const searchRoom = await Room.findById(req.params.id)
+    if (!searchRoom){
+      return res.status(404).json({ mensaje: "La habitación solicitada no existe" });
+       };
+    await Room.findByIdAndDelete(req.params.id, req.body)
+    res.status(200).json({ mensaje: "La habitación fue eliminada con exito" });
+  }catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ mensaje: "Ocurrio un error, no pudimos hacer eliminar la habitacion seleccionada" });
+  }
+}
