@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -10,9 +10,9 @@ const userSchema = new mongoose.Schema({
       validator: (value) => {
         return /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(
           value
-        );
-      },
-    },
+        )
+      }
+    }
   },
   password: {
     type: String,
@@ -20,11 +20,11 @@ const userSchema = new mongoose.Schema({
     require: true,
     minLength: 6,
     validate: {
-        validator: (value) => {
-            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)
-        }
+      validator: (value) => {
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)
+      }
     }
-  },
-});
-const User = mongoose.model("User", userSchema);
-export default User;
+  }
+})
+const User = mongoose.model('User', userSchema)
+export default User
