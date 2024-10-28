@@ -1,7 +1,7 @@
 import { handleValidationResult } from "../helpers/validationResult.js";
 import { check } from "express-validator";
 
-export const roomsValidations = [
+const roomsValidations = [
   check("room_name")
     .notEmpty()
     .withMessage("El tipo de habitacion es obligatorio")
@@ -17,7 +17,7 @@ export const roomsValidations = [
     .withMessage("El precio es obligatorio")
     .isNumeric()
     .withMessage("El precio tiene que ser un numero")
-    .isLength({ min: 5000, max: 1000000 })
+    .isLength({ min: 4, max: 7 })
     .withMessage("El precio minimo es de 5.000 y maximo de 1.000.000"),
   check("number_rooms")
     .notEmpty()
@@ -41,3 +41,5 @@ export const roomsValidations = [
     .withMessage("Debe tener un minimo de 50 caracteres y un maximo de 1000"),
   (req, res, next) => handleValidationResult(req, res, next),
 ];
+
+export default roomsValidations;
