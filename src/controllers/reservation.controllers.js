@@ -1,5 +1,8 @@
 import mongoose from 'mongoose'
 import Reservation from '../database/model/reservation.model.js'
+import Room from '../database/model/modelRoom.js'
+import { validateAvailabilityRoom, validationCheckOutBefore } from '../validations/validationReservation.js'
+import User from '../database/model/user.js'
 
 // func create reservation
 export const createReservation = async (req, res) => {
@@ -128,5 +131,43 @@ export const deleteReservation = async (req, res) => {
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: '[ERROR] No se pudo eliminar la reservación' })
+  }
+}
+
+// func room availability
+export const availabilityRooms = async (req, res, next) => {
+  try {
+    // eslint-disable-next-line camelcase
+    const { check_in, check_out, room_id: idRoom, user_id: idUser } = req.body
+    const getRoom = await Room.findById(idRoom)
+    const getUser = await User.findById(idUser)
+
+    if (!getRoom) {
+      return res.status(400).json({ message: '[ERROR] La habitación no existe' })
+    }
+    if (!getUser) {
+      return res.status(400).json({ message: '[ERROR] El usuario no existe' })
+    }
+
+    const getReservations = await Reservation.find({ room_id: idRoom })
+    const checkValidateBeforeDate = validationCheckOutBefore(check_in, check_out)
+    if (!checkValidateBeforeDate.success) {
+      return res.status(400).json({ message: checkValidateBeforeDate.msg })
+    }
+
+    const checkValidateAvailabilityRoom = validateAvailabilityRoom(
+      check_in,
+      check_out,
+      getReservations,
+      getRoom.number_rooms)
+
+    if (!checkValidateAvailabilityRoom.success) {
+      return res.status(400).json({ message: checkValidateAvailabilityRoom.msg })
+    }
+
+    next()
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: '[ERROR] No se pudo procesar la reservación' })
   }
 }

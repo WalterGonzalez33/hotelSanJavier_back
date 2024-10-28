@@ -35,3 +35,48 @@ export const reservationValidations = [
     .withMessage('El id no tiene el formato valido'),
   (req, res, next) => handleValidationResult(req, res, next)
 ]
+
+export const validationCheckOutBefore = (checkIn, checkOut) => {
+  const normalizeDate = (date) => {
+    date.setHours(0, 0, 0, 0)
+    return date
+  }
+  const checkInDate = normalizeDate(new Date(checkIn))
+  const checkOutDate = normalizeDate(new Date(checkOut))
+  const currentDay = normalizeDate(new Date())
+
+  if (checkInDate < currentDay) {
+    return { success: false, msg: '[ERROR] Solo se puede reservar desde el dia actual en adelante' }
+  }
+  if (checkOutDate < checkInDate) {
+    return { success: false, msg: '[ERROR] La fecha de salida no puede ser antes de la entrada' }
+  }
+
+  return { success: true, msg: '[OK] Fechas verificadas correctamente' }
+}
+
+export const validateAvailabilityRoom = (checkIn, checkOut, reservations, numberRooms) => {
+  if (reservations.length === 0) {
+    return { success: true, msg: '[OK] Hay disponibilidad' }
+  }
+
+  const checkInDate = new Date(checkIn)
+  const checkOutDate = new Date(checkOut)
+  let countNumberRooms = numberRooms
+
+  for (let i = reservations.length - 1; i >= 0; i--) {
+    // eslint-disable-next-line camelcase
+    const { check_in, check_out } = reservations[i]
+
+    const currentCheckInDate = new Date(check_in)
+    const currentCheckOutDate = new Date(check_out)
+
+    if (checkInDate >= currentCheckInDate && checkOutDate <= currentCheckOutDate) {
+      countNumberRooms--
+    }
+  }
+
+  if (countNumberRooms > 0) { return { success: true, msg: '[OK] Hay disponibilidad' } }
+
+  return { success: false, msg: '[ERROR] No hay disponibilidad' }
+}
