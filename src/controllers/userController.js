@@ -10,7 +10,7 @@ export const createUser = async (req, res) => {
   try {
     // agregar validaciones
     // Verifico si el mail ya fue registrado
-    const { email, password } = req.body;
+    const { email, username, password , status, roll } = req.body;
     const usuarioExistente = await User.findOne({ email });
     if (usuarioExistente) {
         return res
@@ -33,6 +33,7 @@ export const createUser = async (req, res) => {
       .json({ mensaje: "Ocurrio un error al intentar crear un usuario" });
   }
 };
+
 export const login = async (req, res) => {
   try {
     //agregar validaciones
@@ -64,7 +65,7 @@ export const login = async (req, res) => {
   }
 };
 
-  export const userList = async (req,res) =>{
+export const userList = async (req,res) =>{
     try{
       const users = await User.find();
       res.status (200).json(users);
@@ -73,4 +74,4 @@ export const login = async (req, res) => {
       console.error(error);
       res.status(500).json({mensaje: "ocurrio un error no se pudo crear el usuario"})
     }
-  }
+};

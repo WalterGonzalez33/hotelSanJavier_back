@@ -14,6 +14,13 @@ const userSchema = new mongoose.Schema({
       }
     }
   },
+  username: {
+    type: String,
+    required:true,
+    unique: true,
+    min: 3,
+    max:25
+  },
   password: {
     type: String,
     trim: true,
@@ -24,6 +31,22 @@ const userSchema = new mongoose.Schema({
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)
       }
     }
+  },
+  status:{
+    type:String,
+    required:true,
+    enum:[
+      'Activo',
+      'Suspendido'
+    ]
+  },
+  roll: {
+    type:String,
+    required:true,
+    enum:[
+      'Usuario',
+      'Admin'
+    ]
   }
 })
 const User = mongoose.model('User', userSchema)
