@@ -1,16 +1,12 @@
 import User from "../database/model/user.js";
 import bcrypt from "bcrypt";
 
-export const listaUser = (req,res)=>{
-  console.log("Alguien hizo una solicitud get a la ruta de prueba");
-  res.send("hola mundo desde el backend")
-}
 
 export const createUser = async (req, res) => {
   try {
     // agregar validaciones
     // Verifico si el mail ya fue registrado
-    const { email, password } = req.body;
+    const { email, username, password , status, roll } = req.body;
     const usuarioExistente = await User.findOne({ email });
     if (usuarioExistente) {
         return res
@@ -33,6 +29,7 @@ export const createUser = async (req, res) => {
       .json({ mensaje: "Ocurrio un error al intentar crear un usuario" });
   }
 };
+
 export const login = async (req, res) => {
   try {
     //agregar validaciones
@@ -64,7 +61,7 @@ export const login = async (req, res) => {
   }
 };
 
-  export const userList = async (req,res) =>{
+export const userList = async (req,res) =>{
     try{
       const users = await User.find();
       res.status (200).json(users);
@@ -73,4 +70,4 @@ export const login = async (req, res) => {
       console.error(error);
       res.status(500).json({mensaje: "ocurrio un error no se pudo crear el usuario"})
     }
-  }
+};
