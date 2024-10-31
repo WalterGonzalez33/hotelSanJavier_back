@@ -41,6 +41,12 @@ export const validationCheckOutBefore = (checkIn, checkOut) => {
     date.setHours(0, 0, 0, 0)
     return date
   }
+  const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
+
+  if (!dateRegex.test(checkIn) || !dateRegex.test(checkOut)) {
+    return { success: false, msg: '[ERROR] Formato de fechas incorrecto' }
+  }
+
   const checkInDate = normalizeDate(new Date(checkIn))
   const checkOutDate = normalizeDate(new Date(checkOut))
   const currentDay = normalizeDate(new Date())
