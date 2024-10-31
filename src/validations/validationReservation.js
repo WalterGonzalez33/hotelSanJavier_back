@@ -77,7 +77,10 @@ export const validateAvailabilityRoom = (checkIn, checkOut, reservations, number
     const currentCheckInDate = new Date(check_in)
     const currentCheckOutDate = new Date(check_out)
 
-    if (checkInDate >= currentCheckInDate && checkOutDate <= currentCheckOutDate) {
+    if ((checkInDate >= currentCheckInDate && checkOutDate <= currentCheckOutDate) ||
+    (checkInDate < currentCheckOutDate && checkInDate >= currentCheckInDate) ||
+    (checkOutDate > currentCheckInDate && checkOutDate <= currentCheckOutDate)
+    ) {
       countNumberRooms--
     }
   }
