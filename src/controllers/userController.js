@@ -71,3 +71,19 @@ export const userList = async (req,res) =>{
       res.status(500).json({mensaje: "ocurrio un error no se pudo crear el usuario"})
     }
 };
+
+export const userDelete = async(req, res) =>{
+  try {
+    const searchUser = await User.findById(req.params.id)
+    if (!searchUser) {
+      return res.status(404).json({ mensaje: 'El usuario selicitado no existe' })
+    };
+    await User.findByIdAndDelete(req.params.id, req.body)
+    res.status(200).json({ mensaje: 'El usuario fue eliminado con éxito' })
+  } catch (error) {
+    console.error(error)
+    res
+      .status(500)
+      .json({ mensaje: 'Ocurrió un error, no pudimos eliminar el usuario seleccionado' })
+  }
+}

@@ -100,6 +100,6 @@ export const deleteRoom = async (req, res) => {
     console.error(error)
     res
       .status(500)
-      .json({ mensaje: 'Ocurrió un error, no pudimos hacer eliminar la habitación seleccionada' })
+      .json({ mensaje: 'Ocurrió un error, no pudimos eliminar la habitación seleccionada' })
   }
 }
