@@ -41,6 +41,12 @@ export const validationCheckOutBefore = (checkIn, checkOut) => {
     date.setHours(0, 0, 0, 0)
     return date
   }
+  const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
+
+  if (!dateRegex.test(checkIn) || !dateRegex.test(checkOut)) {
+    return { success: false, msg: '[ERROR] Formato de fechas incorrecto' }
+  }
+
   const checkInDate = normalizeDate(new Date(checkIn))
   const checkOutDate = normalizeDate(new Date(checkOut))
   const currentDay = normalizeDate(new Date())
@@ -71,7 +77,10 @@ export const validateAvailabilityRoom = (checkIn, checkOut, reservations, number
     const currentCheckInDate = new Date(check_in)
     const currentCheckOutDate = new Date(check_out)
 
-    if (checkInDate >= currentCheckInDate && checkOutDate <= currentCheckOutDate) {
+    if ((checkInDate >= currentCheckInDate && checkOutDate <= currentCheckOutDate) ||
+    (checkInDate < currentCheckOutDate && checkInDate >= currentCheckInDate) ||
+    (checkOutDate > currentCheckInDate && checkOutDate <= currentCheckOutDate)
+    ) {
       countNumberRooms--
     }
   }

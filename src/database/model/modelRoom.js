@@ -8,7 +8,9 @@ const roomSchema = new Schema({
       'Dobles Superiores',
       'Departamentos',
       'Doble de Lujo',
-      'Suite Superior'
+      'Suites Superiores',
+      'Suite Junior',
+      'Habitaciones Dobles Deluxe'
     ]
     // unique:true
   },
@@ -17,6 +19,10 @@ const roomSchema = new Schema({
     required: true,
     min: 5000,
     max: 1000000
+  },
+  benefits: {
+    type: Array,
+    required: true
   },
   number_rooms: {
     type: Number,
