@@ -1,5 +1,7 @@
 import User from "../database/model/user.js";
 import bcrypt from "bcrypt";
+import generarJWT from "../helpers/generateJWT.js";
+
 
 
 export const createUser = async (req, res) => {
@@ -34,24 +36,22 @@ export const login = async (req, res) => {
   try {
     //agregar validaciones
     //verificar si el mail ya fue registrado
-    const { email, password } = req.body;
+    const { email} = req.body;
     const usuarioExistente = await User.findOne({ email });
     if (!usuarioExistente) {
       return res
         .status(400)
         .json({ mensaje: "Correo o password incorrecto - email" });
     }
-    //quiero saber si el password en incorrecto
-    if (!passwordValido) {
-      return res
-        .status(400)
-        .json({ mensaje: "Correo o password incorrecto - password" });
-    }
+    
+   
     // generar un token
+    const token = await generarJWT(usuarioExistente._id, usuarioExistente.email)
     // respodemos afirmativamente
     res.status(200).json({
       mensaje: "Los datos del usuario son validos",
-      email
+      token,
+      id:usuarioExistente._id
     });
   } catch (error) {
     console.error(error);
