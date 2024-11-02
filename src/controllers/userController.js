@@ -87,3 +87,4 @@ export const userDelete = async(req, res) =>{
       .json({ mensaje: 'Ocurrió un error, no pudimos eliminar el usuario seleccionado' })
   }
 }
+
