@@ -87,3 +87,26 @@ export const userDelete = async(req, res) =>{
       .json({ mensaje: 'Ocurrió un error, no pudimos eliminar el usuario seleccionado' })
   }
 }
+
+
+export const userEdit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ mensaje: 'El usuario solicitado no existe' });
+    }
+
+    res.status(200).json({
+      mensaje: 'El usuario fue actualizado con éxito',
+      usuario: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo actualizar el usuario' });
+  }
+};
