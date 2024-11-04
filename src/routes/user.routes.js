@@ -5,6 +5,6 @@ const router = Router()
 router.route('/users').post(createUser).get(userList);
 router.route('/users/:id').delete(userDelete);
 //faltaba la ruta del login
-router.route('/users/login').post([verifyJWT],login)
+router.route('/').post(login)
 
 export default router;
