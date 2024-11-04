@@ -6,10 +6,18 @@ export const createUser = async (req, res) => {
   try {
     const { email, username, password, status, roll } = req.body
     let data = {}
-    if (!status || !roll) {
+    if (!status && !roll) {
       data = {
         roll: 'Usuario',
         status: 'Activo',
+        email,
+        username,
+        password
+      }
+    } else {
+      data = {
+        roll,
+        status,
         email,
         username,
         password
@@ -21,11 +29,8 @@ export const createUser = async (req, res) => {
         .status(400)
         .json({ mensaje: 'Este correo ya se encuentra registrado' })
     }
-    console.log(data)
-
-    const isEmpty = (data) => Object.keys(data).length === 0
-
-    const newUser = new User(!isEmpty ? data : req.body)
+    
+    const newUser = new User(data)
     const saltos = bcrypt.genSaltSync(10)
     newUser.password = bcrypt.hashSync(password, saltos)
     newUser.save()
