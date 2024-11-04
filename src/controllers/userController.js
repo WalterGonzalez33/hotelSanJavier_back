@@ -1,11 +1,20 @@
 import User from '../database/model/user.js'
 import bcrypt from 'bcrypt'
+import generarJWT from '../helpers/generateJWT.js'
 
 export const createUser = async (req, res) => {
   try {
-    // agregar validaciones
-    // Verifico si el mail ya fue registrado
     const { email, username, password, status, roll } = req.body
+    let data = {}
+    if (!status || !roll) {
+      data = {
+        roll: 'Usuario',
+        status: 'Activo',
+        email,
+        username,
+        password
+      }
+    }
     const usuarioExistente = await User.findOne({ email })
     if (usuarioExistente) {
       return res
@@ -13,9 +22,9 @@ export const createUser = async (req, res) => {
         .json({ mensaje: 'Este correo ya se encuentra registrado' })
     }
 
-    // crear el usuario
-    const newUser = new User(req.body)
-    // Hashear el password
+    const isEmpty = (data) => Object.keys(data).length === 0
+
+    const newUser = new User(isEmpty ? data : req.body)
     const saltos = bcrypt.genSaltSync(10)
     newUser.password = bcrypt.hashSync(password, saltos)
     newUser.save()
@@ -25,7 +34,7 @@ export const createUser = async (req, res) => {
     console.error(error)
     res
       .status(400)
-      .json({ mensaje: 'Ocurrio un error al intentar crear un usuario' })
+      .json({ mensaje: 'Ocurrió un error al intentar crear un usuario' })
   }
 }
 
@@ -42,9 +51,11 @@ export const login = async (req, res) => {
     }
 
     // generar un token
+    const token = await generarJWT(usuarioExistente._id, usuarioExistente.email)
     // respodemos afirmativamente
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
+      token,
       id: usuarioExistente._id
     })
   } catch (error) {
@@ -78,5 +89,27 @@ export const userDelete = async (req, res) => {
     res
       .status(500)
       .json({ mensaje: 'Ocurrió un error, no pudimos eliminar el usuario seleccionado' })
+  }
+}
+
+export const userEdit = async (req, res) => {
+  try {
+    const { id } = req.params
+    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true
+    })
+
+    if (!updatedUser) {
+      return res.status(404).json({ mensaje: 'El usuario solicitado no existe' })
+    }
+
+    res.status(200).json({
+      mensaje: 'El usuario fue actualizado con éxito',
+      usuario: updatedUser
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo actualizar el usuario' })
   }
 }
