@@ -3,6 +3,6 @@ import { createUser, login, userDelete, userList } from '../controllers/userCont
 const router = Router()
 router.route('/users').post(createUser).get(userList)
 router.route('/users/:id').delete(userDelete)
-router.route('/').post(login)
+router.route('/login').post(login)
 
 export default router

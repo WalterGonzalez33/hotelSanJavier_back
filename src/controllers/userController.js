@@ -65,14 +65,14 @@ export const login = async (req, res) => {
         .json({ mensaje: "Correo o password incorrecto - password" });
     }
     // generar un token
-   /*const token = await generarJWT(
+   const token = await generarJWT(
       usuarioExistente._id,
       usuarioExistente.email
-    );*/
+    );
     // respodemos afirmativamente
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
-      //token,
+      token,
       //id: usuarioExistente._id
     })
   } catch (error) {
