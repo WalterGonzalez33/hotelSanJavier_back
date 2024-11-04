@@ -16,10 +16,10 @@ const userSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    required:true,
-    unique: true,
+    required: true,
+    default: 'userName',
     min: 3,
-    max:25
+    max: 25
   },
   password: {
     type: String,
@@ -32,18 +32,18 @@ const userSchema = new mongoose.Schema({
       }
     }
   },
-  status:{
-    type:String,
-    required:true,
-    enum:[
+  status: {
+    type: String,
+    required: true,
+    enum: [
       'Activo',
       'Suspendido'
     ]
   },
   roll: {
-    type:String,
-    required:true,
-    enum:[
+    type: String,
+    required: true,
+    enum: [
       'Usuario',
       'Admin'
     ]

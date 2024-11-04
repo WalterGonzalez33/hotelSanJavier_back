@@ -1,10 +1,8 @@
-import { Router } from "express";
-import { createUser, login, userDelete, userList, userEdit } from "../controllers/userController.js";
-import verifyJWT from "../helpers/verifyJWT.js"
+import { Router } from 'express'
+import { createUser, login, userDelete, userList } from '../controllers/userController.js'
 const router = Router()
-router.route('/users').post(createUser).get(userList);
-router.route('/users/:id').delete(userDelete);
-//faltaba la ruta del login
+router.route('/users').post(createUser).get(userList)
+router.route('/users/:id').delete(userDelete)
 router.route('/').post(login)
 
-export default router;
+export default router
