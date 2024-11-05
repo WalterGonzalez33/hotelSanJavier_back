@@ -1,4 +1,4 @@
-import { handleValidationResult } from "../helpers/validationResult.js";
+import handleValidationResult from "../helpers/validationResult.js"
 import { check } from "express-validator";
 
 const roomsValidations = [

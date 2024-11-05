@@ -1,11 +1,10 @@
-import { check, validationResult } from "express-validator";
-
+import { check } from "express-validator";
+import handleValidationResult from "./validationResult.js";
 
 const validacionUsuario = [
   check("email")
     .notEmpty()
     .withMessage("El email del usuario es un dato obligatorio"),
-  (req, res, next) => validationResult(req, res, next),
 
   check("username")
     .notEmpty()
@@ -14,7 +13,6 @@ const validacionUsuario = [
       max: 25,
     })
     .withMessage("El nombre del usuario es obligatorio"),
-  (req, res, next) => validationResult(req, res, next),
 
   check("password")
     .notEmpty()
@@ -23,13 +21,11 @@ const validacionUsuario = [
     })
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
     .withMessage("la contraseña es obligatorio"),
-  (req, res, next) => validationResult(req, res, next),
 
   check("status").notEmpty().withMessage("El estado es un dato obligatorio"),
-  (req, res, next) => validationResult(req, res, next),
 
   check("roll").notEmpty().withMessage("El roll es un dato obligatorio"),
-  (req, res, next) => validationResult(req, res, next),
+  (req, res, next) => handleValidationResult(req, res, next),
 ];
 
 export default validacionUsuario;
