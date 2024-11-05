@@ -24,12 +24,18 @@ export const createUser = async (req, res) => {
       }
     }
     const usuarioExistente = await User.findOne({ email })
+    const usernameExist = await User.findOne({ username })
     if (usuarioExistente) {
       return res
         .status(400)
         .json({ mensaje: 'Este correo ya se encuentra registrado' })
     }
-    
+    if (usernameExist) {
+      return res
+        .status(400)
+        .json({ message: 'El nombre de usuario ya se encuentra registrado' })
+    }
+
     const newUser = new User(data)
     const saltos = bcrypt.genSaltSync(10)
     newUser.password = bcrypt.hashSync(password, saltos)
@@ -100,8 +106,23 @@ export const userDelete = async (req, res) => {
 
 export const userEdit = async (req, res) => {
   try {
-    const { id } = req.params
-    const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+    const { id: _id } = req.params
+
+    const { email, username } = await User.findOne({ _id })
+    const emailExist = await User.findOne({ email })
+    const usernameExist = await User.findOne({ username })
+    if (emailExist && emailExist.email !== email) {
+      return res
+        .status(400)
+        .json({ mensaje: 'Este correo ya se encuentra registrado' })
+    }
+    if (usernameExist && usernameExist.username !== username) {
+      return res
+        .status(400)
+        .json({ message: 'El nombre de usuario ya se encuentra registrado' })
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(_id, req.body, {
       new: true,
       runValidators: true
     })
@@ -117,5 +138,21 @@ export const userEdit = async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo actualizar el usuario' })
+  }
+}
+
+export const getUser = async (req, res) => {
+  try {
+    const { id: _id } = req.params
+    const getUserId = await User.findOne({ _id })
+
+    if (!getUserId) {
+      return res.status(404).json({ mensaje: 'El usuario solicitado no existe' })
+    }
+
+    res.status(200).json(getUserId)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo obtener el usuario' })
   }
 }

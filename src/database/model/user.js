@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     require: true,
-    minLength: 6,
+    minLength: 8,
     validate: {
       validator: (value) => {
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)
