@@ -72,14 +72,12 @@ export const login = async (req, res) => {
     }
     // generar un token
     const token = await generarJWT(
-      usuarioExistente._id,
-      usuarioExistente.email
+      usuarioExistente._id
     )
     // respodemos afirmativamente
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
       token
-      // id: usuarioExistente._id
     })
   } catch (error) {
     console.error(error)
