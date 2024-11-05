@@ -1,5 +1,5 @@
 import { check } from 'express-validator'
-import { handleValidationResult } from '../helpers/validationResult.js'
+import  handleValidationResult  from '../helpers/validationResult.js'
 
 export const reservationValidations = [
   check('check_in')
