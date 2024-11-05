@@ -29,7 +29,7 @@ export const createUser = async (req, res) => {
         .status(400)
         .json({ mensaje: 'Este correo ya se encuentra registrado' })
     }
-    
+
     const newUser = new User(data)
     const saltos = bcrypt.genSaltSync(10)
     newUser.password = bcrypt.hashSync(password, saltos)
@@ -46,34 +46,34 @@ export const createUser = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    //agregar validaciones
-    //verificar si el mail ya fue registrado
-    //falta checkear contraseña
-    const { email, password } = req.body;
-    const usuarioExistente = await User.findOne({ email });
+    // agregar validaciones
+    // verificar si el mail ya fue registrado
+    // falta checkear contraseña
+    const { email, password } = req.body
+    const usuarioExistente = await User.findOne({ email })
     if (!usuarioExistente) {
       return res
         .status(400)
         .json({ mensaje: 'Correo o password incorrecto - email' })
     }
-    //verifico contraseña
-    const passwordValido = bcrypt.compare(password, usuarioExistente.password);
-    //quiero saber si el password es incorrecto
+    // verifico contraseña
+    const passwordValido = bcrypt.compare(password, usuarioExistente.password)
+    // quiero saber si el password es incorrecto
     if (!passwordValido) {
       return res
         .status(400)
-        .json({ mensaje: "Correo o password incorrecto - password" });
+        .json({ mensaje: 'Correo o password incorrecto - password' })
     }
     // generar un token
-   const token = await generarJWT(
+    const token = await generarJWT(
       usuarioExistente._id,
       usuarioExistente.email
-    );
+    )
     // respodemos afirmativamente
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
-      token,
-      //id: usuarioExistente._id
+      token
+      // id: usuarioExistente._id
     })
   } catch (error) {
     console.error(error)
@@ -95,17 +95,17 @@ export const userList = async (req, res) => {
 
 export const userDelete = async (req, res) => {
   try {
-    const searchUser = await User.findById(req.params.id);
+    const searchUser = await User.findById(req.params.id)
     if (!searchUser) {
       return res.status(404).json({ mensaje: 'El usuario solicitado no existe' })
     };
     await User.findByIdAndDelete(req.params.id, req.body)
     res.status(200).json({ mensaje: 'El usuario fue eliminado con éxito' })
   } catch (error) {
-    console.error(error);
+    console.error(error)
     res.status(500).json({
-      mensaje: "Ocurrió un error, no pudimos eliminar el usuario seleccionado",
-    });
+      mensaje: 'Ocurrió un error, no pudimos eliminar el usuario seleccionado'
+    })
   }
 }
 
