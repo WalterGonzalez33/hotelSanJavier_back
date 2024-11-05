@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 import Room from '../database/model/modelRoom.js'
+import Reservation from '../database/model/reservation.model.js'
+import { validateAvailabilityRoom, validationCheckOutBefore } from '../validations/validationReservation.js'
 
 export const createRoom = async (req, res) => {
   try {
@@ -101,5 +103,38 @@ export const deleteRoom = async (req, res) => {
     res
       .status(500)
       .json({ mensaje: 'Ocurrió un error, no pudimos eliminar la habitación seleccionada' })
+  }
+}
+
+// func check available rooms
+export const checkAvailable = async (req, res) => {
+  try {
+    // eslint-disable-next-line camelcase
+    const { check_in, check_out } = req.params
+
+    const getRooms = await Room.find()
+    const roomsAvailableList = []
+
+    const checkValidateBeforeDate = validationCheckOutBefore(check_in, check_out)
+    if (!checkValidateBeforeDate.success) {
+      return res.status(400).json({ message: checkValidateBeforeDate.msg })
+    }
+
+    for (let i = 0; i < getRooms.length; i++) {
+      const getReservations = await Reservation.find({ room_id: getRooms[i]._id })
+      const checkValidateAvailabilityRoom = validateAvailabilityRoom(
+        check_in,
+        check_out,
+        getReservations,
+        getRooms[i].number_rooms)
+      if (checkValidateAvailabilityRoom.success) {
+        roomsAvailableList.push(getRooms[i])
+      }
+    }
+
+    res.status(200).json(roomsAvailableList)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: '[ERROR] No se pudo procesar la petición' })
   }
 }
