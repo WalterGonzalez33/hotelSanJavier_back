@@ -52,18 +52,24 @@ export const createUser = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    // agregar validaciones
-    // verificar si el mail ya fue registrado
-    // falta checkear contraseña
     const { email, password } = req.body
+
     const usuarioExistente = await User.findOne({ email })
+    let passwordValido = null
     if (!usuarioExistente) {
       return res
         .status(400)
         .json({ mensaje: 'Correo o password incorrecto - email' })
     }
     // verifico contraseña
-    const passwordValido = bcrypt.compare(password, usuarioExistente.password)
+    console.log(password)
+    const bcryptPattern = /^\$2[ayb]\$\d{2}\$[./A-Za-z0-9]{53}$/
+    if (bcryptPattern.test(usuarioExistente.password)) {
+      passwordValido = await bcrypt.compare(password, usuarioExistente.password)
+    } else {
+      passwordValido = password === usuarioExistente.password
+    }
+
     // quiero saber si el password es incorrecto
     if (!passwordValido) {
       return res
@@ -78,8 +84,8 @@ export const login = async (req, res) => {
     // respodemos afirmativamente
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
-      token
-      // id: usuarioExistente._id
+      token,
+      id: usuarioExistente._id
     })
   } catch (error) {
     console.error(error)
