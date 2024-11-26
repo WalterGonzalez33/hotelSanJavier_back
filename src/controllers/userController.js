@@ -52,9 +52,6 @@ export const createUser = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    // agregar validaciones
-    // verificar si el mail ya fue registrado
-    // falta checkear contraseña
     const { email, password } = req.body
     const usuarioExistente = await User.findOne({ email })
     if (!usuarioExistente) {
@@ -62,9 +59,7 @@ export const login = async (req, res) => {
         .status(400)
         .json({ mensaje: 'Correo o password incorrecto - email' })
     }
-    // verifico contraseña
     const passwordValido = bcrypt.compare(password, usuarioExistente.password)
-    // quiero saber si el password es incorrecto
     if (!passwordValido) {
       return res
         .status(400)
@@ -73,13 +68,15 @@ export const login = async (req, res) => {
     // generar un token
     const token = await generarJWT(
       usuarioExistente._id,
-      usuarioExistente.email
+      usuarioExistente.email,
+      usuarioExistente.roll
     )
     // respodemos afirmativamente
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
-      token
-      // id: usuarioExistente._id
+      token,
+      id: usuarioExistente._id,
+      roll: usuarioExistente.roll
     })
   } catch (error) {
     console.error(error)

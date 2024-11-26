@@ -7,8 +7,9 @@ const validateJWT = (req, res, next) => {
   }
   try {
     const payload = jwt.verify(token, process.env.SECRET_JWT)
-    req._id = payload.uid
-    req.email = payload.email
+    req._id = payload.uid;
+    req.email = payload.email;
+    req.roll = payload.roll
     next()
   } catch (error) {
     console.error('error al verificar el token:', error.message)
