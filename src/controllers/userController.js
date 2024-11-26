@@ -5,8 +5,10 @@ import generarJWT from '../helpers/generateJWT.js'
 export const createUser = async (req, res) => {
   try {
     const { email, username, password, status, roll } = req.body
+
     let data = {}
-    if (!status && !roll) {
+    if ((!status || status !== 'Activo' || status !== 'Suspendido') &&
+    (!roll || roll !== 'Usuario' || roll !== 'Admin')) {
       data = {
         roll: 'Usuario',
         status: 'Activo',
