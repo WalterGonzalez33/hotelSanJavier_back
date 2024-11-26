@@ -7,7 +7,8 @@ export const createUser = async (req, res) => {
     const { email, username, password, status, roll } = req.body
 
     let data = {}
-    if ((!status || status !== 'Activo' || status !== 'Suspendido') && (!roll || roll !== 'Usuario' || roll !== 'Admin')) {
+    if ((!status || status !== 'Activo' || status !== 'Suspendido') &&
+    (!roll || roll !== 'Usuario' || roll !== 'Admin')) {
       data = {
         roll: 'Usuario',
         status: 'Activo',

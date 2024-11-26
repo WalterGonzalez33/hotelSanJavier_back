@@ -11,7 +11,7 @@ const connectDB = async () => {
   try {
     const { connection } = await mongoose.connect(mongoDB)
     const url = colors.bgGreen.white.bold(`${connection.host}: ${connection.port}`)
-    console.info(colors.white.italic(`BD conectada correctamente: ${url}`))
+    console.info(colors.cyan.bold(`BD conectada correctamente: ${url}\n`))
   } catch (err) {
     if (err instanceof Error) {
       console.error(colors.bgRed.white.italic(`Error al conectar a la BD: ${err.message}`))

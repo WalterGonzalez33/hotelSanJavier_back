@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirName, '/public')))
 
 // lanzamiento del servidor
 app.listen(port, () => {
-  console.info(colors.white.italic(`\nServidor escuchando en el puerto: ${colors.green.bold(port)}`))
+  console.info(colors.cyan.italic(`\nServidor escuchando en el puerto: ${colors.green.bold(port)}`))
 })
 
 // configuración de ruta
