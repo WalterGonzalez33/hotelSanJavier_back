@@ -25,17 +25,17 @@ export const createUser = async (req, res) => {
         password
       }
     }
-    const usuarioExistente = await User.findOne({ email })
     const usernameExist = await User.findOne({ username })
-    if (usuarioExistente) {
-      return res
-        .status(400)
-        .json({ mensaje: 'Este correo ya se encuentra registrado' })
-    }
+    const usuarioExistente = await User.findOne({ email })
     if (usernameExist) {
       return res
         .status(400)
         .json({ message: 'El nombre de usuario ya se encuentra registrado' })
+    }
+    if (usuarioExistente) {
+      return res
+        .status(400)
+        .json({ message: 'El correo ya se encuentra registrado' })
     }
 
     const newUser = new User(data)
@@ -64,7 +64,7 @@ export const login = async (req, res) => {
         .json({ mensaje: 'Correo o password incorrecto - email' })
     }
     // verifico contraseña
-    console.log(password)
+
     const bcryptPattern = /^\$2[ayb]\$\d{2}\$[./A-Za-z0-9]{53}$/
     if (bcryptPattern.test(usuarioExistente.password)) {
       passwordValido = await bcrypt.compare(password, usuarioExistente.password)
@@ -78,12 +78,16 @@ export const login = async (req, res) => {
         .status(400)
         .json({ mensaje: 'Correo o password incorrecto - password' })
     }
+
+    if (usuarioExistente.status === 'Suspendido') {
+      return res.status(400).json({ mensaje: 'Esta cuenta esta suspendida' })
+    }
     // generar un token
     const token = await generarJWT(
       usuarioExistente._id,
       usuarioExistente.email
     )
-    // respodemos afirmativamente
+
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
       token,
