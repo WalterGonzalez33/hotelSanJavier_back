@@ -143,7 +143,7 @@ export const availabilityRooms = async (req, res, next) => {
     const { check_in, check_out, room_id: idRoom, user_id: idUser } = req.body
     const getRoom = await Room.findById(idRoom)
     const getUser = await User.findById(idUser)
-
+    const checkMethod = req.method !== 'PUT'
     if (!getRoom) {
       return res.status(400).json({ message: '[ERROR] La habitación no existe' })
     }
@@ -152,7 +152,7 @@ export const availabilityRooms = async (req, res, next) => {
     }
 
     const getReservations = await Reservation.find({ room_id: idRoom })
-    const checkValidateBeforeDate = validationCheckOutBefore(check_in, check_out)
+    const checkValidateBeforeDate = validationCheckOutBefore(check_in, check_out, checkMethod)
     if (!checkValidateBeforeDate.success) {
       return res.status(400).json({ message: checkValidateBeforeDate.msg })
     }

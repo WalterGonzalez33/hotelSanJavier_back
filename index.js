@@ -3,8 +3,9 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import './src/database/dbConnection.js'
+import colors from 'colors'
+import { fileURLToPath } from 'url'
 import roomRouter from './src/routes/room.routes.js'
 import userRouter from './src/routes/user.routes.js'
 import reservationRouter from './src/routes/reservation.routes.js'
@@ -31,7 +32,7 @@ app.use(express.static(path.join(__dirName, '/public')))
 
 // lanzamiento del servidor
 app.listen(port, () => {
-  console.info(`Servidor escuchando en el puerto ${port}`)
+  console.info(colors.cyan.italic(`\nServidor escuchando en el puerto: ${colors.green.bold(port)}`))
 })
 
 // configuración de ruta

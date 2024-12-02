@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema({
     enum: [
       'Activo',
       'Suspendido'
-    ]
+    ],
+    default: 'Activo'
   },
   roll: {
     type: String,
@@ -46,7 +47,8 @@ const userSchema = new mongoose.Schema({
     enum: [
       'Usuario',
       'Admin'
-    ]
+    ],
+    default: 'Usuario'
   },
   isDeleted: { type: Boolean, default: false }
 })

@@ -1,5 +1,5 @@
 import { check } from 'express-validator'
-import  handleValidationResult  from '../helpers/validationResult.js'
+import handleValidationResult from '../helpers/validationResult.js'
 
 export const reservationValidations = [
   check('check_in')
@@ -36,7 +36,7 @@ export const reservationValidations = [
   (req, res, next) => handleValidationResult(req, res, next)
 ]
 
-export const validationCheckOutBefore = (checkIn, checkOut) => {
+export const validationCheckOutBefore = (checkIn, checkOut, watchDate = true) => {
   const normalizeDate = (date) => {
     date.setHours(0, 0, 0, 0)
     return date
@@ -51,8 +51,10 @@ export const validationCheckOutBefore = (checkIn, checkOut) => {
   const checkOutDate = normalizeDate(new Date(checkOut))
   const currentDay = normalizeDate(new Date())
 
-  if (checkInDate < currentDay) {
-    return { success: false, msg: '[ERROR] Solo se puede reservar desde el dia actual en adelante' }
+  if (watchDate) {
+    if (checkInDate < currentDay) {
+      return { success: false, msg: '[ERROR] Solo se puede reservar desde el dia actual en adelante' }
+    }
   }
   if (checkOutDate < checkInDate) {
     return { success: false, msg: '[ERROR] La fecha de salida no puede ser antes de la entrada' }
