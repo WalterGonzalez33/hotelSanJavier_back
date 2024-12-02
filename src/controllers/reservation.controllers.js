@@ -44,6 +44,9 @@ export const listReservation = async (req, res) => {
         },
         {
           $unwind: '$room_reservation'
+        },
+        {
+          $match: { isDeleted: false }
         }
       ]
     )
@@ -122,15 +125,14 @@ export const editReservation = async (req, res) => {
 export const deleteReservation = async (req, res) => {
   try {
     const { id } = req.params
-    const reservationFindId = await Reservation.findById(id)
+    const reservationFindId = await Reservation.findByIdAndUpdate(id, { isDeleted: true })
     if (!reservationFindId) {
       return res.status(404).json({ message: '[ERROR] No se pudo encontrar la reservación' })
     }
-    await Reservation.findByIdAndDelete(id)
-    res.status(200).json({ message: '[OK] La reservación fue eliminada correctamente' })
+    res.status(200).json({ message: '[OK] La reservación fue desactivada correctamente' })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: '[ERROR] No se pudo eliminar la reservación' })
+    res.status(500).json({ message: '[ERROR] No se pudo desactivar la reservación' })
   }
 }
 
