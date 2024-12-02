@@ -47,7 +47,8 @@ const userSchema = new mongoose.Schema({
       'Usuario',
       'Admin'
     ]
-  }
+  },
+  isDeleted: { type: Boolean, default: false }
 })
 const User = mongoose.model('User', userSchema)
 export default User

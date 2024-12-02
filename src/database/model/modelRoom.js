@@ -53,7 +53,8 @@ const roomSchema = new Schema({
     required: true,
     minLength: 50,
     maxLength: 1000
-  }
+  },
+  isDeleted: { type: Boolean, default: false }
 })
 
 const Room = mongoose.model('room', roomSchema)
