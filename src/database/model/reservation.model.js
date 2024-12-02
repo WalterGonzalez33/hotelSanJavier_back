@@ -38,7 +38,8 @@ const reservationSchema = new Schema(
     room_id: {
       type: mongoose.Types.ObjectId,
       required: true
-    }
+    },
+    isDeleted: { type: Boolean, default: false }
   },
   {
     timestamps: true

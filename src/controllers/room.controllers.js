@@ -28,6 +28,9 @@ export const ListarRoom = async (req, res) => {
             foreignField: 'room_id',
             as: 'reservations'
           }
+        },
+        {
+          $match: { isDeleted: false }
         }
       ]
     )
@@ -92,12 +95,11 @@ export const editRoom = async (req, res) => {
 
 export const deleteRoom = async (req, res) => {
   try {
-    const searchRoom = await Room.findById(req.params.id)
+    const searchRoom = await Room.findByIdAndUpdate(req.params.id, { isDeleted: true })
     if (!searchRoom) {
       return res.status(404).json({ mensaje: 'La habitación solicitada no existe' })
     };
-    await Room.findByIdAndDelete(req.params.id, req.body)
-    res.status(200).json({ mensaje: 'La habitación fue eliminada con éxito' })
+    res.status(200).json({ mensaje: 'La habitación fue desactivada con éxito' })
   } catch (error) {
     console.error(error)
     res
@@ -112,7 +114,7 @@ export const checkAvailable = async (req, res) => {
     // eslint-disable-next-line camelcase
     const { check_in, check_out } = req.params
 
-    const getRooms = await Room.find()
+    const getRooms = await Room.find({ isDeleted: false })
     const roomsAvailableList = []
 
     const checkValidateBeforeDate = validationCheckOutBefore(check_in, check_out)

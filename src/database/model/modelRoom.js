@@ -12,7 +12,6 @@ const roomSchema = new Schema({
       'Suite Junior',
       'Habitaciones Dobles Deluxe'
     ]
-    // unique:true
   },
   price: {
     type: Number,
@@ -53,7 +52,8 @@ const roomSchema = new Schema({
     required: true,
     minLength: 50,
     maxLength: 1000
-  }
+  },
+  isDeleted: { type: Boolean, default: false }
 })
 
 const Room = mongoose.model('room', roomSchema)
