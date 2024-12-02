@@ -12,7 +12,6 @@ const roomSchema = new Schema({
       'Suite Junior',
       'Habitaciones Dobles Deluxe'
     ]
-    // unique:true
   },
   price: {
     type: Number,
