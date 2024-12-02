@@ -63,7 +63,10 @@ export const login = async (req, res) => {
         .status(400)
         .json({ mensaje: 'Correo o password incorrecto - email' })
     }
-    // verifico contraseña
+
+    if (usuarioExistente.isDeleted) {
+      return res.status(400).json({ mensaje: 'El usuario no se encuentra activo' })
+    }
 
     const bcryptPattern = /^\$2[ayb]\$\d{2}\$[./A-Za-z0-9]{53}$/
     if (bcryptPattern.test(usuarioExistente.password)) {
@@ -96,28 +99,27 @@ export const login = async (req, res) => {
     console.error(error)
     res
       .status(500)
-      .json({ mensaje: 'Ocurrio un error al intentar loguear a un usuario' })
+      .json({ mensaje: 'Ocurrió un error al intentar iniciar a un usuario' })
   }
 }
 
 export const userList = async (req, res) => {
   try {
-    const users = await User.find()
+    const users = await User.find({ isDeleted: false })
     res.status(200).json(users)
   } catch (error) {
     console.error(error)
-    res.status(500).json({ mensaje: 'ocurrio un error no se pudo crear el usuario' })
+    res.status(500).json({ mensaje: 'ocurrió un error no se pudo crear el usuario' })
   }
 }
 
 export const userDelete = async (req, res) => {
   try {
-    const searchUser = await User.findById(req.params.id)
+    const searchUser = await User.findByIdAndUpdate(req.params.id, { isDeleted: true })
     if (!searchUser) {
       return res.status(404).json({ mensaje: 'El usuario solicitado no existe' })
     };
-    await User.findByIdAndDelete(req.params.id, req.body)
-    res.status(200).json({ mensaje: 'El usuario fue eliminado con éxito' })
+    res.status(200).json({ mensaje: 'El usuario fue desactivado con éxito' })
   } catch (error) {
     console.error(error)
     res.status(500).json({
