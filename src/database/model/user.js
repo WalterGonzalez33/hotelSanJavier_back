@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: 'userName',
     min: 3,
-    max: 25
+    max: 25,
+    trim: true
   },
   password: {
     type: String,
@@ -39,7 +40,8 @@ const userSchema = new mongoose.Schema({
       'Activo',
       'Suspendido'
     ],
-    default: 'Activo'
+    default: 'Activo',
+    trim: true
   },
   roll: {
     type: String,
@@ -48,7 +50,8 @@ const userSchema = new mongoose.Schema({
       'Usuario',
       'Admin'
     ],
-    default: 'Usuario'
+    default: 'Usuario',
+    trim: true
   },
   isDeleted: { type: Boolean, default: false }
 })

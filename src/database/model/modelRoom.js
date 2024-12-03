@@ -11,7 +11,8 @@ const roomSchema = new Schema({
       'Suites Superiores',
       'Suite Junior',
       'Habitaciones Dobles Deluxe'
-    ]
+    ],
+    trim: true
   },
   price: {
     type: Number,
@@ -39,7 +40,8 @@ const roomSchema = new Schema({
       validator: (value) => {
         return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/.test(value)
       }
-    }
+    },
+    trim: true
   },
   brief_description: {
     type: String,
