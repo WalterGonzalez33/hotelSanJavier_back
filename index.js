@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import roomRouter from './src/routes/room.routes.js'
 import userRouter from './src/routes/user.routes.js'
 import reservationRouter from './src/routes/reservation.routes.js'
+import validateJWT from './src/helpers/verifyJWT.js'
 
 // config de las variables de entorno
 dotenv.config()
@@ -36,6 +37,9 @@ app.listen(port, () => {
 })
 
 // configuración de ruta
+app.post('/api/checkToken', [validateJWT], (req, res) => {
+  res.status(200).json({ access: true })
+})
 app.use('/api', roomRouter)
 app.use('/api', userRouter)
 app.use('/api/reservation', reservationRouter)
