@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import mongoose from 'mongoose'
 import Reservation from '../database/model/reservation.model.js'
 import Room from '../database/model/modelRoom.js'
@@ -7,11 +8,20 @@ import User from '../database/model/user.js'
 // func create reservation
 export const createReservation = async (req, res) => {
   try {
+    const { user_id } = req.body
+
+    const currentReservationsUser = await Reservation.find({ user_id, isDeleted: false })
+
+    if (currentReservationsUser) {
+      if (currentReservationsUser.length > 3) {
+        return res.status(400).json({ message: '[ERROR] Un usuario no puede tener mas de 3 reservas bajo su dominio' })
+      }
+    }
     const newReservation = new Reservation(req.body)
     await newReservation.save()
+
     res.status(201).json({ message: '[OK] La reservación fue creada correctamente' })
   } catch (err) {
-    console.error(err)
     res.status(500).json({ message: '[ERROR] La reservación no pudo ser creada' })
   }
 }
