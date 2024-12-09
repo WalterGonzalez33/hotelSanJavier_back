@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: 'userName',
     min: 3,
-    max: 25
+    max: 25,
+    trim: true
   },
   password: {
     type: String,
@@ -39,7 +40,8 @@ const userSchema = new mongoose.Schema({
       'Activo',
       'Suspendido'
     ],
-    default: 'Activo'
+    default: 'Activo',
+    trim: true
   },
   roll: {
     type: String,
@@ -48,9 +50,27 @@ const userSchema = new mongoose.Schema({
       'Usuario',
       'Admin'
     ],
-    default: 'Usuario'
+    default: 'Usuario',
+    trim: true
   },
   isDeleted: { type: Boolean, default: false }
 })
 const User = mongoose.model('User', userSchema)
+const createUserAdmin = async () => {
+  const checkAdmin = await User.findOne({ email: 'admin@hotel.com' })
+
+  if (checkAdmin) { return }
+
+  const adminData = {
+    username: 'admin',
+    email: 'admin@hotel.com',
+    password: 'Admin@1234',
+    roll: 'Admin'
+  }
+
+  const userAdmin = new User(adminData)
+  userAdmin.save()
+}
+
+createUserAdmin()
 export default User
