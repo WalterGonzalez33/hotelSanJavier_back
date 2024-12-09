@@ -8,7 +8,7 @@ const roomRouter = Router()
 
 roomRouter.route('/rooms')
   .post([validateJWT, verifyAdmin, roomsValidations], createRoom)
-  .get([validateJWT, verifyAdmin], ListarRoom)
+  .get(ListarRoom)
 
 roomRouter.route('/rooms/:id')
   .get([validateJWT, verifyAdmin], ListarRoomId)
