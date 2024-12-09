@@ -4,7 +4,7 @@ const generarJWT = async (uid, email) => {
   try {
     const payload = { uid, email }
     const token = jwt.sign(payload, process.env.SECRET_JWT, {
-      expiresIn: '1m'
+      expiresIn: '1h'
     })
     return token
   } catch (error) {
