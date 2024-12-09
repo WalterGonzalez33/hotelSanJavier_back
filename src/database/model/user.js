@@ -56,4 +56,21 @@ const userSchema = new mongoose.Schema({
   isDeleted: { type: Boolean, default: false }
 })
 const User = mongoose.model('User', userSchema)
+const createUserAdmin = async () => {
+  const checkAdmin = await User.findOne({ email: 'admin@hotel.com' })
+
+  if (checkAdmin) { return }
+
+  const adminData = {
+    username: 'admin',
+    email: 'admin@hotel.com',
+    password: 'Admin@1234',
+    roll: 'Admin'
+  }
+
+  const userAdmin = new User(adminData)
+  userAdmin.save()
+}
+
+createUserAdmin()
 export default User
