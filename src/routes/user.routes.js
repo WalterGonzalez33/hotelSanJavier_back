@@ -1,10 +1,13 @@
 import { Router } from 'express'
-import { createUser, getUser, login, userDelete, userEdit, userList } from '../controllers/userController.js'
+import { createUser, getUser, getUserRoll, login, userDelete, userEdit, userList } from '../controllers/userController.js'
 import validacionUsuario from '../validations/validationUsers.js'
 import validateJWT from '../helpers/verifyJWT.js'
 import verifyAdmin from '../helpers/verifyAdmin.js'
 
 const router = Router()
+
+router.route('/get-roll-user/:id')
+  .get(getUserRoll)
 
 router.route('/users')
   .post([validacionUsuario], createUser)

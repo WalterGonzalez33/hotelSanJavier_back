@@ -181,3 +181,17 @@ export const getUser = async (req, res) => {
     res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo obtener el usuario' })
   }
 }
+
+export const getUserRoll = async (req, res) => {
+  try {
+    const { id: _id } = req.params
+    const getUserId = await User.findOne({ _id })
+
+    if (!getUserId) {
+      return res.status(404).json({ mensaje: 'El usuario solicitado no existe' })
+    }
+    res.status(200).json(getUserId.roll)
+  } catch (err) {
+    res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo obtener el usuario' })
+  }
+}
