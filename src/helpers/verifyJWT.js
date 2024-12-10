@@ -1,14 +1,16 @@
 import jwt from 'jsonwebtoken'
 
 const validateJWT = (req, res, next) => {
-  const token = req.header('x-token')
-  if (!token) {
-    return res.status(401).json({ mensaje: 'no hay token en la peticion' })
-  }
   try {
+    const token = req.header('Authorization')
+    if (!token) {
+      return res.status(401).json({ mensaje: 'no hay token en la petición' })
+    }
+
     const payload = jwt.verify(token, process.env.SECRET_JWT)
-    req._id = payload.uid
+
     req.email = payload.email
+
     next()
   } catch (error) {
     console.error('error al verificar el token:', error.message)
@@ -22,7 +24,7 @@ const validateJWT = (req, res, next) => {
       })
     } else {
       return res.status(401).json({
-        mensaje: 'Error en la autenticacion'
+        mensaje: 'Error en la autenticación'
       })
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import mongoose from 'mongoose'
 import Reservation from '../database/model/reservation.model.js'
 import Room from '../database/model/modelRoom.js'
@@ -7,11 +8,20 @@ import User from '../database/model/user.js'
 // func create reservation
 export const createReservation = async (req, res) => {
   try {
+    const { user_id } = req.body
+
+    const currentReservationsUser = await Reservation.find({ user_id, isDeleted: false })
+
+    if (currentReservationsUser) {
+      if (currentReservationsUser.length > 3) {
+        return res.status(400).json({ message: '[ERROR] Un usuario no puede tener mas de 3 reservas bajo su dominio' })
+      }
+    }
     const newReservation = new Reservation(req.body)
     await newReservation.save()
+
     res.status(201).json({ message: '[OK] La reservación fue creada correctamente' })
   } catch (err) {
-    console.error(err)
     res.status(500).json({ message: '[ERROR] La reservación no pudo ser creada' })
   }
 }
@@ -44,6 +54,9 @@ export const listReservation = async (req, res) => {
         },
         {
           $unwind: '$room_reservation'
+        },
+        {
+          $match: { isDeleted: false }
         }
       ]
     )
@@ -122,15 +135,14 @@ export const editReservation = async (req, res) => {
 export const deleteReservation = async (req, res) => {
   try {
     const { id } = req.params
-    const reservationFindId = await Reservation.findById(id)
+    const reservationFindId = await Reservation.findByIdAndUpdate(id, { isDeleted: true })
     if (!reservationFindId) {
       return res.status(404).json({ message: '[ERROR] No se pudo encontrar la reservación' })
     }
-    await Reservation.findByIdAndDelete(id)
-    res.status(200).json({ message: '[OK] La reservación fue eliminada correctamente' })
+    res.status(200).json({ message: '[OK] La reservación fue desactivada correctamente' })
   } catch (err) {
     console.error(err)
-    res.status(500).json({ message: '[ERROR] No se pudo eliminar la reservación' })
+    res.status(500).json({ message: '[ERROR] No se pudo desactivar la reservación' })
   }
 }
 
@@ -141,7 +153,7 @@ export const availabilityRooms = async (req, res, next) => {
     const { check_in, check_out, room_id: idRoom, user_id: idUser } = req.body
     const getRoom = await Room.findById(idRoom)
     const getUser = await User.findById(idUser)
-
+    const checkMethod = req.method !== 'PUT'
     if (!getRoom) {
       return res.status(400).json({ message: '[ERROR] La habitación no existe' })
     }
@@ -150,7 +162,7 @@ export const availabilityRooms = async (req, res, next) => {
     }
 
     const getReservations = await Reservation.find({ room_id: idRoom })
-    const checkValidateBeforeDate = validationCheckOutBefore(check_in, check_out)
+    const checkValidateBeforeDate = validationCheckOutBefore(check_in, check_out, checkMethod)
     if (!checkValidateBeforeDate.success) {
       return res.status(400).json({ message: checkValidateBeforeDate.msg })
     }

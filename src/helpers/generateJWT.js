@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 const generarJWT = async (uid, email) => {
   try {
     const payload = { uid, email }
-    const token = await jwt.sign(payload, process.env.SECRET_JWT, {
+    const token = jwt.sign(payload, process.env.SECRET_JWT, {
       expiresIn: '1h'
     })
     return token

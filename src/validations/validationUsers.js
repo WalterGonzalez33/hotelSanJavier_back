@@ -1,5 +1,5 @@
 import { check } from 'express-validator'
-import handleValidationResult from './validationResult.js'
+import handleValidationResult from '../helpers/validationResult.js'
 
 const validacionUsuario = [
   check('email')
@@ -21,10 +21,6 @@ const validacionUsuario = [
     })
     .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/)
     .withMessage('la contraseña es obligatorio'),
-
-  check('status').notEmpty().withMessage('El estado es un dato obligatorio'),
-
-  check('roll').notEmpty().withMessage('El roll es un dato obligatorio'),
   (req, res, next) => handleValidationResult(req, res, next)
 ]
 

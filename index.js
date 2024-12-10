@@ -3,11 +3,13 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 import cors from 'cors'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import './src/database/dbConnection.js'
+import colors from 'colors'
+import { fileURLToPath } from 'url'
 import roomRouter from './src/routes/room.routes.js'
 import userRouter from './src/routes/user.routes.js'
 import reservationRouter from './src/routes/reservation.routes.js'
+import validateJWT from './src/helpers/verifyJWT.js'
 
 // config de las variables de entorno
 dotenv.config()
@@ -31,10 +33,13 @@ app.use(express.static(path.join(__dirName, '/public')))
 
 // lanzamiento del servidor
 app.listen(port, () => {
-  console.info(`Servidor escuchando en el puerto ${port}`)
+  console.info(colors.cyan.italic(`\nServidor escuchando en el puerto: ${colors.green.bold(port)}`))
 })
 
 // configuración de ruta
+app.post('/api/checkToken', [validateJWT], (req, res) => {
+  res.status(200).json({ access: true })
+})
 app.use('/api', roomRouter)
 app.use('/api', userRouter)
 app.use('/api/reservation', reservationRouter)

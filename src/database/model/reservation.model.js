@@ -11,7 +11,8 @@ const reservationSchema = new Schema(
         validator: (value) => {
           return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(value)
         }
-      }
+      },
+      trim: true
     },
     check_out: {
       type: String,
@@ -22,7 +23,8 @@ const reservationSchema = new Schema(
         validator: (value) => {
           return /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(value)
         }
-      }
+      },
+      trim: true
     },
     persons: {
       type: Number,
@@ -38,7 +40,8 @@ const reservationSchema = new Schema(
     room_id: {
       type: mongoose.Types.ObjectId,
       required: true
-    }
+    },
+    isDeleted: { type: Boolean, default: false }
   },
   {
     timestamps: true

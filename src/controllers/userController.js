@@ -5,8 +5,10 @@ import generarJWT from '../helpers/generateJWT.js'
 export const createUser = async (req, res) => {
   try {
     const { email, username, password, status, roll } = req.body
+
     let data = {}
-    if (!status && !roll) {
+    if ((!status || status !== 'Activo' || status !== 'Suspendido') &&
+    (!roll || roll !== 'Usuario' || roll !== 'Admin')) {
       data = {
         roll: 'Usuario',
         status: 'Activo',
@@ -23,17 +25,17 @@ export const createUser = async (req, res) => {
         password
       }
     }
-    const usuarioExistente = await User.findOne({ email })
     const usernameExist = await User.findOne({ username })
-    if (usuarioExistente) {
-      return res
-        .status(400)
-        .json({ mensaje: 'Este correo ya se encuentra registrado' })
-    }
+    const usuarioExistente = await User.findOne({ email })
     if (usernameExist) {
       return res
         .status(400)
         .json({ message: 'El nombre de usuario ya se encuentra registrado' })
+    }
+    if (usuarioExistente) {
+      return res
+        .status(400)
+        .json({ message: 'El correo ya se encuentra registrado' })
     }
 
     const newUser = new User(data)
@@ -61,8 +63,11 @@ export const login = async (req, res) => {
         .status(400)
         .json({ mensaje: 'Correo o password incorrecto - email' })
     }
-    // verifico contraseña
-    console.log(password)
+
+    if (usuarioExistente.isDeleted) {
+      return res.status(400).json({ mensaje: 'El usuario no se encuentra activo' })
+    }
+
     const bcryptPattern = /^\$2[ayb]\$\d{2}\$[./A-Za-z0-9]{53}$/
     if (bcryptPattern.test(usuarioExistente.password)) {
       passwordValido = await bcrypt.compare(password, usuarioExistente.password)
@@ -76,12 +81,16 @@ export const login = async (req, res) => {
         .status(400)
         .json({ mensaje: 'Correo o password incorrecto - password' })
     }
+
+    if (usuarioExistente.status === 'Suspendido') {
+      return res.status(400).json({ mensaje: 'Esta cuenta esta suspendida' })
+    }
     // generar un token
     const token = await generarJWT(
       usuarioExistente._id,
       usuarioExistente.email
     )
-    // respodemos afirmativamente
+
     res.status(200).json({
       mensaje: 'Los datos del usuario son validos',
       token,
@@ -91,28 +100,27 @@ export const login = async (req, res) => {
     console.error(error)
     res
       .status(500)
-      .json({ mensaje: 'Ocurrio un error al intentar loguear a un usuario' })
+      .json({ mensaje: 'Ocurrió un error al intentar iniciar a un usuario' })
   }
 }
 
 export const userList = async (req, res) => {
   try {
-    const users = await User.find()
+    const users = await User.find({ isDeleted: false })
     res.status(200).json(users)
   } catch (error) {
     console.error(error)
-    res.status(500).json({ mensaje: 'ocurrio un error no se pudo crear el usuario' })
+    res.status(500).json({ mensaje: 'ocurrió un error no se pudo crear el usuario' })
   }
 }
 
 export const userDelete = async (req, res) => {
   try {
-    const searchUser = await User.findById(req.params.id)
+    const searchUser = await User.findByIdAndUpdate(req.params.id, { isDeleted: true })
     if (!searchUser) {
       return res.status(404).json({ mensaje: 'El usuario solicitado no existe' })
     };
-    await User.findByIdAndDelete(req.params.id, req.body)
-    res.status(200).json({ mensaje: 'El usuario fue eliminado con éxito' })
+    res.status(200).json({ mensaje: 'El usuario fue desactivado con éxito' })
   } catch (error) {
     console.error(error)
     res.status(500).json({
@@ -170,6 +178,20 @@ export const getUser = async (req, res) => {
     res.status(200).json(getUserId)
   } catch (error) {
     console.error(error)
+    res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo obtener el usuario' })
+  }
+}
+
+export const getUserRoll = async (req, res) => {
+  try {
+    const { id: _id } = req.params
+    const getUserId = await User.findOne({ _id })
+
+    if (!getUserId) {
+      return res.status(404).json({ mensaje: 'El usuario solicitado no existe' })
+    }
+    res.status(200).json(getUserId.roll)
+  } catch (err) {
     res.status(500).json({ mensaje: 'Ocurrió un error, no se pudo obtener el usuario' })
   }
 }
