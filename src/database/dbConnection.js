@@ -9,7 +9,10 @@ const mongoDB = process.env.MONGO_URI
 
 const connectDB = async () => {
   try {
-    const { connection } = await mongoose.connect(mongoDB)
+    const { connection } = await mongoose.connect(mongoDB, {
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000
+    })
     const url = colors.bgGreen.white.bold(`${connection.host}: ${connection.port}`)
     console.info(colors.cyan.bold(`BD conectada correctamente: ${url}\n`))
   } catch (err) {
