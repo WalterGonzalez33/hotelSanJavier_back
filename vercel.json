@@ -4,8 +4,8 @@
         "use":"@vercel/node"
     }],
     "outputDirectory": "public",
-    "routes":[{
-        "src":"/(.*)",
-        "dest":"/"
-    }]
+    "routes":[
+        {"src":"/(.*)", "dest": "/public/index.html"},
+        {"src":"/", "dest": "/public/$1"}
+    ]
 }
