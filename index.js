@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }))
 
 const __fileName = fileURLToPath(import.meta.url)
 const __dirName = path.dirname(__fileName)
-app.use(express.static(path.join(__dirName, '/public')))
+app.use(express.static(path.resolve(__dirName, 'public')))
 
 // lanzamiento del servidor
 app.listen(port, () => {
