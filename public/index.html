@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Sol san Javier</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Hotel Sol de San Javier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background-color: #417E38;
+      color: white;
+      padding: 1rem 0;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    p {
+      margin: 0.5rem 0;
+      font-size: 1.2rem;
+    }
+    .content {
+      padding: 2rem;
+    }
+    .links a {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      text-decoration: none;
+      color: white;
+      background-color: #00684A;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .links a:hover {
+      background-color: #004c36;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
 </head>
 <body>
-    <h1>Bienvenido al BACK-END</h1>
+  <header>
+    <h1>API RESTful - Hotel Sol de San Javier</h1>
+    <p>Bienvenido a la API del Hotel Sol de San Javier</p>
+  </header>
+  <div class="content">
+    <p>Explora los recursos disponibles y administra el sistema del hotel mediante nuestras rutas.</p>
+    <div class="links">
+      <a href="/api/users">Usuarios</a>
+      <a href="/api/rooms">Habitaciones</a>
+      <a href="/api/reservation/list">Reservas</a>
+      <a href="https://github.com/WalterGonzalez33/hotelSanJavier_back" target="_blank">Repositorio</a>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2024 Hotel Sol de San Javier. Todos los derechos reservados.</p>
+  </footer>
 </body>
 </html>
