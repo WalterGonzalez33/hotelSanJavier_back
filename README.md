@@ -3,9 +3,9 @@
 **Una API RESTful para la gestión de reservas, habitaciones y usuarios del [Hotel Sol de San Javier](https://github.com/WalterGonzalez33/hotelSolDeSanJavierFront).**  
 Este proyecto está desarrollado con Node.js, Express y MongoDB, proporcionando una solución eficiente y escalable para la administración del hotel.  
 
----
+<br>
 
-<div align='center' style="display: flex; gap: 8px; wrap: wrap;">
+<div style="display: flex; gap: 8px; wrap: wrap;">
   <a href="https://nodejs.org/en/">
     <img src="https://img.shields.io/badge/-Node.js-417E38?labelColor=gray&style=plastic&logo=node.js&logoColor=417E38&logoWidth=30" alt="Node.js">
   </a>
@@ -15,6 +15,10 @@ Este proyecto está desarrollado con Node.js, Express y MongoDB, proporcionando 
 
   <a href="https://www.mongodb.com">
     <img src="https://img.shields.io/badge/-MongoDB-00684A?labelColor=gray&style=plastic&logo=mongodb&logoColor=00684A&logoWidth=30" alt="MongoDB">
+  </a>
+
+  <a href="https://jwt.io/">
+    <img src="https://jwt.io/img/badge-compatible.svg" alt="JWT" width="90">
   </a>
 </div>
 
@@ -30,10 +34,6 @@ Este proyecto está desarrollado con Node.js, Express y MongoDB, proporcionando 
 - [Endpoints 🛠️](#🛠️-Endpoints-de-la-API)
 - [Contribuciones 📊](#📊-Contribuciones)
 - [Equipo 💻](#desarrolladores-💻)
-
-<br>
-
----
 
 <br>
 
@@ -61,10 +61,6 @@ Las principales funcionalidades de la API, son:
 - **[Mongoose](https://mongoosejs.com/)**: ODM para trabajar con MongoDB.  
 - **[dotenv](https://www.npmjs.com/package/dotenv)**: Gestión de variables de entorno.  
 - **[jsonwebtoken](https://jwt.io/)**: Autenticación mediante JWT.  
-
-  <a href="https://jwt.io/">
-    <img src="https://jwt.io/img/badge-compatible.svg" alt="JWT" width="90">
-  </a>
 
 <br>
 
@@ -223,10 +219,6 @@ Con este usuario podrás acceder a las rutas protegidas.
 | [![Mauro Coniglio](https://avatars.githubusercontent.com/u/172056402?v=4)](https://github.com/MauroConiglio)  | [![Isaías Gius](https://avatars.githubusercontent.com/u/169393660?v=4)](https://github.com/G1U5) | [![Tomas Santamarina](https://avatars.githubusercontent.com/u/68829637?v=4)](https://github.com/Tomas2845)  | [![Fernando Valdivia](https://avatars.githubusercontent.com/u/159139593?v=4)](https://github.com/Fernando-Valdivia) | [![Walter Gonzalez](https://avatars.githubusercontent.com/u/83594534?v=4)](https://github.com/WalterGonzalez33) |
 |---|---|---|---|---|
 | [Mauro Coniglio](https://github.com/MauroConiglio) | [Isaías Gius](https://github.com/G1U5) | [Tomas Santamarina](https://github.com/Tomas2845) | [Fernando Valdivia](https://github.com/Fernando-Valdivia) | [Walter Gonzalez](https://github.com/WalterGonzalez33) |
-
-<br>
-
----
 
 <br>
 
