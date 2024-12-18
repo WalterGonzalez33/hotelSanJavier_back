@@ -1,17 +1,19 @@
 {
-    "builds" : [{
-        "src":"./index.js",
-        "use":"@vercel/node"
-    }],
-    "outputDirectory": "public",
-    "routes":[
-        {"src":"/(.*)", "dest": "/public/index.html"},
-        {"src":"/", "dest": "/public/$1"}
+    "builds": [
+      {
+        "src": "./index.js",
+        "use": "@vercel/node"
+      }
     ],
+    "outputDirectory": "public",
     "rewrites": [
-    {
-      "source": "/_next/live",
-      "destination": "/"
-    }
-  ]
-}
+      {
+        "source": "/(.*)",
+        "destination": "/public/index.html"
+      },
+      {
+        "source": "/_next/live",
+        "destination": "/"
+      }
+    ]
+  }
