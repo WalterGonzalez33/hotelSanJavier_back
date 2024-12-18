@@ -5,7 +5,6 @@
         "use": "@vercel/node"
       }
     ],
-    "outputDirectory": "public",
     "rewrites": [
       {
         "source": "/(.*)",
@@ -14,6 +13,17 @@
       {
         "source": "/_next/live",
         "destination": "/"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; script-src 'self' https://vercel.live; style-src 'self'; img-src 'self' data:; connect-src 'self';"
+          }
+        ]
       }
     ]
   }
